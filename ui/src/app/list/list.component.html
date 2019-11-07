@@ -1,4 +1,10 @@
-<div class="col">
+<div class="col mt-4">
+  <select (change)="selectUser($event.target.value)" class="form-control">
+    <option *ngFor="let user of users" [value]="user.id">{{user.username}}</option>
+    <option [value]="11">TODO remove me</option>
+  </select>
+</div>
+<div class="col mt-4">
   <div *ngIf="todos">
     <table class="table table-striped">
       <thead>

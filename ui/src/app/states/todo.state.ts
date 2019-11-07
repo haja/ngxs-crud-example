@@ -3,8 +3,11 @@ import {Todo} from '../models/Todo';
 import {TodoService} from '../todo.service';
 import {tap} from 'rxjs/operators';
 import {AddTodo, DeleteTodo, GetTodos, SetSelectedTodo, UpdateTodo} from '../actions/todo.action';
+import {User} from '../models/User';
 
 export class TodoStateModel {
+  users: User[];
+  selectedUser: User;
   todos: Todo[];
   selectedTodo: Todo;
 }
@@ -12,6 +15,8 @@ export class TodoStateModel {
 @State<TodoStateModel>({
   name: 'todos',
   defaults: {
+    users: [],
+    selectedUser: null,
     todos: [],
     selectedTodo: null
   }

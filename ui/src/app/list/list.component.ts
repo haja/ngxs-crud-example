@@ -4,6 +4,7 @@ import {TodoState} from '../states/todo.state';
 import {Observable} from 'rxjs';
 import {Todo} from '../models/Todo';
 import {DeleteTodo, GetTodos, SetSelectedTodo} from '../actions/todo.action';
+import {User} from '../models/User';
 
 @Component({
   selector: 'app-list',
@@ -12,6 +13,9 @@ import {DeleteTodo, GetTodos, SetSelectedTodo} from '../actions/todo.action';
 })
 export class ListComponent implements OnInit {
   @Select(TodoState.getTodoList) todos: Observable<Todo[]>;
+
+  // TODO implement
+  users: User[] = [];
 
   constructor(private store: Store) {
   }
@@ -26,6 +30,10 @@ export class ListComponent implements OnInit {
 
   editTodo(payload: Todo) {
     this.store.dispatch(new SetSelectedTodo(payload));
+  }
+
+  selectUser(userid: number) {
+    // TODO implement
   }
 
 }
