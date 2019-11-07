@@ -1,4 +1,5 @@
 import {Todo} from '../models/Todo';
+import {User} from '../models/User';
 
 export class AddTodo {
   static readonly type = '[Todo] Add';
@@ -9,6 +10,9 @@ export class AddTodo {
 
 export class GetTodos {
   static readonly type = '[Todo] Get';
+
+  constructor(public userid: number) {
+  }
 }
 
 export class UpdateTodo {
@@ -30,4 +34,8 @@ export class SetSelectedTodo {
 
   constructor(public payload: Todo) {
   }
+}
+
+export class GetUsers {
+  static readonly type = '[User] Get';
 }

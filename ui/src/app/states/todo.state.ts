@@ -2,8 +2,9 @@ import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {Todo} from '../models/Todo';
 import {TodoService} from '../todo.service';
 import {tap} from 'rxjs/operators';
-import {AddTodo, DeleteTodo, GetTodos, SetSelectedTodo, UpdateTodo} from '../actions/todo.action';
+import {AddTodo, DeleteTodo, GetTodos, GetUsers, SetSelectedTodo, UpdateTodo} from '../actions/todo.action';
 import {User} from '../models/User';
+import {UserService} from '../user.service';
 
 export class TodoStateModel {
   users: User[];
@@ -23,7 +24,8 @@ export class TodoStateModel {
 })
 export class TodoState {
 
-  constructor(private todoService: TodoService) {
+  constructor(private todoService: TodoService,
+              private userService: UserService) {
   }
 
   @Selector()
@@ -32,13 +34,18 @@ export class TodoState {
   }
 
   @Selector()
+  static getUserList(state: TodoStateModel) {
+    return state.users;
+  }
+
+  @Selector()
   static getSelectedTodo(state: TodoStateModel) {
     return state.selectedTodo;
   }
 
   @Action(GetTodos)
-  getTodos({getState, setState}: StateContext<TodoStateModel>) {
-    return this.todoService.fetchTodos().pipe(tap((result) => {
+  getTodos({getState, setState}: StateContext<TodoStateModel>, {userid}: GetTodos) {
+    return this.todoService.fetchTodos(userid).pipe(tap((result) => {
       const state = getState();
       setState({
         ...state,
@@ -92,4 +99,15 @@ export class TodoState {
       selectedTodo: payload
     });
   }
+
+  @Action(GetUsers)
+  getUsers({patchState}: StateContext<TodoStateModel>) {
+    return this.userService.fetchUsers().pipe(tap(result => {
+      patchState({
+        users: result,
+      });
+    }));
+  }
+
+
 }

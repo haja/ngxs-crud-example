@@ -3,7 +3,7 @@ import {Select, Store} from '@ngxs/store';
 import {TodoState} from '../states/todo.state';
 import {Observable} from 'rxjs';
 import {Todo} from '../models/Todo';
-import {DeleteTodo, GetTodos, SetSelectedTodo} from '../actions/todo.action';
+import {DeleteTodo, GetTodos, GetUsers, SetSelectedTodo} from '../actions/todo.action';
 import {User} from '../models/User';
 
 @Component({
@@ -13,15 +13,20 @@ import {User} from '../models/User';
 })
 export class ListComponent implements OnInit {
   @Select(TodoState.getTodoList) todos: Observable<Todo[]>;
-
-  // TODO implement
-  users: User[] = [];
+  @Select(TodoState.getUserList) users: Observable<User[]>;
 
   constructor(private store: Store) {
   }
 
   ngOnInit() {
-    this.store.dispatch(new GetTodos());
+    this.store.dispatch(new GetUsers());
+
+    // Hässliche Lösung
+    this.users.subscribe(users => {
+      if (users.length > 0) {
+        this.selectUser(users[0].id);
+      }
+    })
   }
 
   deleteTodo(id: number) {
@@ -33,7 +38,7 @@ export class ListComponent implements OnInit {
   }
 
   selectUser(userid: number) {
-    // TODO implement
+    this.store.dispatch(new GetTodos(userid));
   }
 
 }
